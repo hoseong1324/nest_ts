@@ -1,33 +1,32 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query } from '@nestjs/common';
 import { getDefaultAutoSelectFamily } from 'net';
+import { Movie } from './entities/movie.entity';
+import { MoviesService } from './movies.service';
 
 @Controller('movies')
 export class MoviesController {
 
-    @Get()
-    getAll() {
-        return "this will return all movies";
-    }
+    constructor(readonly moviesService: MoviesService){}
 
-    @Get("search")
-    getSearch(@Query('year') year : string ){
-        return `We are search for a movie made after : ${year}`;
+    @Get()
+    getAll() :Movie[] {
+        return this.moviesService.getAll();
     }
 
     @Get("/:id")
-    getOne(@Param('id') id: string){
-        return `this will return one movies with the id : ${id}`;
+    getOne(@Param('id') id: string) : Movie{
+        return this.moviesService.getOne(id);
     }
 
     @Post()
     create(@Body() movieData){
-        console.log(movieData);
-        return movieData;
+        return this.moviesService.create(movieData);
+        
     }
 
     @Delete("/:id")
     remove(@Param('id') id : string){
-        return `this will delete a movie with the id : ${id}`;
+        return this.moviesService.deleteOne(id);
     }
 
     @Patch("/:id")
