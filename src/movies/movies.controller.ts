@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, Param, Patch, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query } from '@nestjs/common';
 import { getDefaultAutoSelectFamily } from 'net';
 
 @Controller('movies')
@@ -9,14 +9,20 @@ export class MoviesController {
         return "this will return all movies";
     }
 
+    @Get("search")
+    getSearch(@Query('year') year : string ){
+        return `We are search for a movie made after : ${year}`;
+    }
+
     @Get("/:id")
     getOne(@Param('id') id: string){
         return `this will return one movies with the id : ${id}`;
     }
 
     @Post()
-    create(){
-        return 'this will create a moive';
+    create(@Body() movieData){
+        console.log(movieData);
+        return movieData;
     }
 
     @Delete("/:id")
@@ -25,7 +31,10 @@ export class MoviesController {
     }
 
     @Patch("/:id")
-    patch(@Param('id') id : string){
-        return `this will patch a movie with the id : ${id}`;
+    patch(@Param('id') id : string, @Body() updateData){
+        return {
+            updatedMovie: id,
+            updateData,
+        };
     }
 }
