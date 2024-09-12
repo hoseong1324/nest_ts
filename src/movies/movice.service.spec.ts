@@ -109,12 +109,6 @@ describe('MoviesService', () => {
                 expect(e).toBeInstanceOf(NotFoundException);
             }
         })
-
-
     })
-
-
-
-
 
 });
